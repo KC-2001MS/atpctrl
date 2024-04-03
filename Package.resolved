@@ -1,0 +1,33 @@
+{
+  "originHash" : "7fc6f59e1e25a4a7d810c75b1fd078384113c854dc332fbf57631c2d1a59f677",
+  "pins" : [
+    {
+      "identity" : "atprotokit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/KC-2001MS/ATProtoKit.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "f4df5733fde82b01ae0bc0f61db7cbcc98e08d88"
+      }
+    },
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser.git",
+      "state" : {
+        "revision" : "46989693916f56d1186bd59ac15124caef896560",
+        "version" : "1.3.1"
+      }
+    },
+    {
+      "identity" : "swiftsoup",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/scinfu/SwiftSoup.git",
+      "state" : {
+        "revision" : "028487d4a8a291b2fe1b4392b5425b6172056148",
+        "version" : "2.7.2"
+      }
+    }
+  ],
+  "version" : 3
+}

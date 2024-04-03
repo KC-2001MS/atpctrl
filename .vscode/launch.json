@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:atpctrl}",
+            "name": "Debug atpctrl",
+            "program": "${workspaceFolder:atpctrl}/.build/debug/atpctrl",
+            "preLaunchTask": "swift: Build Debug atpctrl"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:atpctrl}",
+            "name": "Release atpctrl",
+            "program": "${workspaceFolder:atpctrl}/.build/release/atpctrl",
+            "preLaunchTask": "swift: Build Release atpctrl"
+        }
+    ]
+}
