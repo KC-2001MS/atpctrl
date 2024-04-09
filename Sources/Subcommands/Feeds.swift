@@ -24,6 +24,7 @@ struct Feeds: AsyncParsableCommand {
     )
     
     mutating func run() async throws {
+        //Login process
         let config = ATProtocolConfiguration(handle: account.handle, appPassword: account.password)
         var atProto: ATProtoKit
         switch try await config.authenticate() {
@@ -32,6 +33,7 @@ struct Feeds: AsyncParsableCommand {
         case .failure(let failure):
             throw(RuntimeError("\(failure)"))
         }
+        //Get a list of suggested feeds
         let result  = try await atProto.getSuggestedFeeds()
         let suggestions: Array<FeedGeneratorView>
         switch result {
@@ -40,6 +42,7 @@ struct Feeds: AsyncParsableCommand {
         case .failure(let failure):
             throw(RuntimeError("\(failure)"))
         }
+        //Display process
         print("Discover New Feeds")
         print("---------------------------------------------------------")
         for suggestion in suggestions {

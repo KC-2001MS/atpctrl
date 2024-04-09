@@ -24,6 +24,7 @@ struct Lists: AsyncParsableCommand {
     )
     
     mutating func run() async throws {
+        //Login process
         let config = ATProtocolConfiguration(handle: account.handle, appPassword: account.password)
         var atProto: ATProtoKit
         let userSesstion: UserSession
@@ -34,6 +35,7 @@ struct Lists: AsyncParsableCommand {
         case .failure(let failure):
             throw(RuntimeError("\(failure)"))
         }
+        //Get a list of listings
         let result  = try await atProto.getLists(from: userSesstion.sessionDID)
         let lists: Array<GraphListView>
         switch result {
@@ -42,6 +44,7 @@ struct Lists: AsyncParsableCommand {
         case .failure(let failure):
             throw(RuntimeError("\(failure)"))
         }
+        //Display process
         print("User Lists")
         print("---------------------------------------------------------")
         for list in lists {

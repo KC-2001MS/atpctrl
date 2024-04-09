@@ -1,7 +1,7 @@
 //
 //  User.swift
 //
-//  
+//
 //  Created by Keisuke Chinone on 2024/04/03.
 //
 
@@ -25,8 +25,8 @@ struct User: AsyncParsableCommand {
         helpNames: [.long, .short]
     )
     
-    
     mutating func run() async throws {
+        //Login process
         let config = ATProtocolConfiguration(handle: account.handle, appPassword: account.password)
         let session: UserSession
         var atProto: ATProtoKit
@@ -37,40 +37,23 @@ struct User: AsyncParsableCommand {
         case .failure(_):
             throw(RuntimeError(""))
         }
-        if text.isEmpty {
-            let result  = try await atProto.getProfile(session.handle)
-            let myAccount: ActorProfileViewDetailed
-            switch result {
-            case .success(let success):
-                myAccount = success.actorProfileView
-            case .failure(let failure):
-                throw(RuntimeError("\(failure)"))
-            }
-            print("Profile")
-            print("---------------------------------------------------------")
-            print(myAccount.displayName ?? "No Display Name", terminator: "")
-            print("[\(myAccount.actorHandle)]")
-            if let description = myAccount.description {
-                print(description)
-            }
-            print("---------------------------------------------------------")
-        } else {
-            let result  = try await atProto.getProfile(text)
-            let account: ActorProfileViewDetailed
-            switch result {
-            case .success(let success):
-                account = success.actorProfileView
-            case .failure(let failure):
-                throw(RuntimeError("\(failure)"))
-            }
-            print("Profile")
-            print("---------------------------------------------------------")
-            print(account.displayName ?? "No Display Name", terminator: "")
-            print("[\(account.actorHandle)]")
-            if let description = account.description {
-                print(description)
-            }
-            print("---------------------------------------------------------")
+        //Retrieve user profiles
+        let result  = try await atProto.getProfile(text.isEmpty ? session.handle : text)
+        let myAccount: ActorProfileViewDetailed
+        switch result {
+        case .success(let success):
+            myAccount = success.actorProfileView
+        case .failure(let failure):
+            throw(RuntimeError("\(failure)"))
         }
+        //Display process
+        print("Profile")
+        print("---------------------------------------------------------")
+        print(myAccount.displayName ?? "No Display Name", terminator: "")
+        print("[\(myAccount.actorHandle)]")
+        if let description = myAccount.description {
+            print(description)
+        }
+        print("---------------------------------------------------------")
     }
 }

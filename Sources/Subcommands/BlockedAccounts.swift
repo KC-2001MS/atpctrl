@@ -23,8 +23,8 @@ struct BlockedAccounts: AsyncParsableCommand {
         helpNames: [.long, .short]
     )
     
-    
     mutating func run() async throws {
+        //Login process
         let config = ATProtocolConfiguration(handle: account.handle, appPassword: account.password)
         var atProto: ATProtoKit
         switch try await config.authenticate() {
@@ -33,6 +33,7 @@ struct BlockedAccounts: AsyncParsableCommand {
         case .failure(_):
             throw(RuntimeError(""))
         }
+        //Get a list of blocked accounts
         let result  = try await atProto.getListBlocks()
         let users: Array<ActorProfileView>
         switch result {
@@ -41,6 +42,7 @@ struct BlockedAccounts: AsyncParsableCommand {
         case .failure(let failure):
             throw(RuntimeError("\(failure)"))
         }
+        //Display process
         print("Blocked Accounts")
         print("---------------------------------------------------------")
         for user in users {
