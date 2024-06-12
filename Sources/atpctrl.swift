@@ -16,16 +16,18 @@ struct ATProtocolContorol: AsyncParsableCommand {
         discussion: """
         A set of commands to operate SNS compliant with AT protocol
         """,
-        version: "0.0.1",
+        version: "0.0.2",
         subcommands: [
+            Login.self,
+            Post.self,
+            User.self,
             Users.self,
             Feeds.self,
             Lists.self,
             MutesAccounts.self,
-            BlockedAccounts.self,
-            User.self
+            BlockedAccounts.self
         ],
-        defaultSubcommand: User.self,
+        defaultSubcommand: Login.self,
         helpNames: [.long, .short]
     )
 }

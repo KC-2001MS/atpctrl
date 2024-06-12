@@ -8,10 +8,9 @@
 
 import ArgumentParser
 import ATProtoKit
+import SwiftLI
 
 struct User: AsyncParsableCommand {
-    @OptionGroup var account: Account
-    
     @Argument(help: "The user's handle you want to display") var text: String = ""
     
     static var configuration = CommandConfiguration(
@@ -20,23 +19,13 @@ struct User: AsyncParsableCommand {
         discussion: """
         Displays user profiles for the specified handle. If blank, your own profile will be displayed.
         """,
-        version: "0.0.1",
+        version: "0.0.2",
         shouldDisplay: true,
         helpNames: [.long, .short]
     )
     
     mutating func run() async throws {
-        //Login process
-        let config = ATProtocolConfiguration(handle: account.handle, appPassword: account.password)
-        let session: UserSession
-        var atProto: ATProtoKit
-        switch try await config.authenticate() {
-        case .success(let result):
-            atProto = ATProtoKit(session: result)
-            session = result
-        case .failure(_):
-            throw(RuntimeError(""))
-        }
+        let (atProto, session) = try await restoreLogin()
         //Retrieve user profiles
         let result  = try await atProto.getProfile(text.isEmpty ? session.handle : text)
         let myAccount: ActorProfileViewDetailed
@@ -46,14 +35,39 @@ struct User: AsyncParsableCommand {
         case .failure(let failure):
             throw(RuntimeError("\(failure)"))
         }
-        //Display process
-        print("Profile")
-        print("---------------------------------------------------------")
-        print(myAccount.displayName ?? "No Display Name", terminator: "")
-        print("[\(myAccount.actorHandle)]")
-        if let description = myAccount.description {
-            print(description)
+        
+        ProfileView(account: myAccount).render()
+    }
+}
+
+struct ProfileView: View {
+    let account: ActorProfileViewDetailed
+    
+    var body: [View] {
+        Text("Profile")
+            .forgroundColor(.blue)
+            .bold()
+            .newLine()
+        
+        HDivider(10)
+            .lineStyle(.double_line)
+            .forgroundColor(.eight_bit(244))
+            .newLine()
+        
+        Group {
+            Text(account.displayName ?? "No Display Name")
+            
+            Text("[\(account.actorHandle)]")
+                .forgroundColor(.eight_bit(244))
         }
-        print("---------------------------------------------------------")
+        .newLine()
+        
+        Text(account.description ?? "")
+            .newLine(account.description != nil)
+        
+        HDivider(10)
+            .lineStyle(.double_line)
+            .forgroundColor(.eight_bit(244))
+            .newLine()
     }
 }

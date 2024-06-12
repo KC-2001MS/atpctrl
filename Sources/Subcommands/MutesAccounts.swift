@@ -8,31 +8,22 @@
 
 import ArgumentParser
 import ATProtoKit
+import SwiftLI
 
 struct MutesAccounts: AsyncParsableCommand {
-    @OptionGroup var account: Account
-    
     static var configuration = CommandConfiguration(
         commandName: "mutes-users",
         abstract: "View the list of muted accounts",
         discussion: """
         Displays a list of muted accounts in the logged-in account.
         """,
-        version: "0.0.1",
+        version: "0.0.2",
         shouldDisplay: true,
         helpNames: [.long, .short]
     )
     
     mutating func run() async throws {
-        //Login process
-        let config = ATProtocolConfiguration(handle: account.handle, appPassword: account.password)
-        var atProto: ATProtoKit
-        switch try await config.authenticate() {
-        case .success(let result):
-            atProto = ATProtoKit(session: result)
-        case .failure(let failure):
-            throw(RuntimeError("\(failure)"))
-        }
+        let (atProto, _) = try await restoreLogin()
         //Get a list of mutes accounts
         let result  = try await atProto.getMutes()
         let users: Array<ActorProfileView>
@@ -43,16 +34,38 @@ struct MutesAccounts: AsyncParsableCommand {
             throw(RuntimeError("\(failure)"))
         }
         //Display process
-        print("Mutes Accounts")
-        print("---------------------------------------------------------")
-        for user in users {
-            if let deisplayName = user.displayName {
-                print(deisplayName.isEmpty ? "No display Name" : deisplayName, terminator: "")
-            } else {
-                print("No display Name", terminator: "")
-            }
-            print("[\(user.actorHandle)]")
+        Group {
+            Text("Mutes Accounts")
+                .forgroundColor(.blue)
+                .bold()
+                .newLine()
+            
+            HDivider(10)
+                .lineStyle(.double_line)
+                .forgroundColor(.eight_bit(244))
+                .newLine()
         }
-        print("---------------------------------------------------------")
+        .render()
+ 
+        for user in users {
+            if let deisplayName = user.displayName, !deisplayName.isEmpty {
+                Text(deisplayName)
+                    .render()
+            } else {
+                Text("No display Name")
+                    .render()
+            }
+            
+            Text("[\(user.actorHandle)]")
+                .forgroundColor(.eight_bit(244))
+                .newLine()
+                .render()
+        }
+        
+        HDivider(10)
+            .lineStyle(.double_line)
+            .forgroundColor(.eight_bit(244))
+            .newLine()
+            .render()
     }
 }

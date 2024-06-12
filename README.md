@@ -13,16 +13,28 @@ Command line tool that allows manipulation of SNS accounts compliant with AT pro
 
 ## Features
 The following operations are supported in SNSs compliant with the AT protocol
-- [ ] Text Submission
+- [x] Text Submission
 - [x] Display profile
 - [x] Search users
 - [x] Display suggested users
 - [x] Display suggested feeds
 - [x] Display user lists
 - [x] Display mutes accounts
-- [x] Display blocked accounts
+- [ ] Display blocked accounts
   
-These features are just examples and will be added as ATProtoKit is developed.
+These features are just examples and will be added as [ATProtoKit](https://github.com/MasterJ93/ATProtoKit) is developed.
+
+## ToDo
+In this project, we are planning to slowly implement the following
+However, please note that this project is dependent on the development status of this API as it uses [ATProtoKit](https://github.com/MasterJ93/ATProtoKit), which is currently under development. Also, since we plan to use many experimental features, development will take time.
+- [ ] Swift 6 Support
+- [x] Swift Concurrency Support
+- [x] Easy debugging capabilities with Swift Testing
+- [x] Supports AT Protocol-enabled and command line-optimized features
+- [ ] Secure storage of login information
+
+## Problem
+Currently, login information is stored in plain text in a text file. We plan to improve this situation eventually, but are having difficulty finding a suitable solution. We appreciate your understanding.
 
 ## Installation
 Currently under development, installation is done using Makefile.

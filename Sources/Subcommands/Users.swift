@@ -8,10 +8,9 @@
 
 import ArgumentParser
 import ATProtoKit
+import SwiftLI
 
 struct Users: AsyncParsableCommand {
-    @OptionGroup var account: Account
-    
     @Argument(help: "String to be searched") var text: String = ""
     
     static var configuration = CommandConfiguration(
@@ -20,23 +19,13 @@ struct Users: AsyncParsableCommand {
         discussion: """
         Displays a list of users who fit the criteria. If blank, a list of recommended users is displayed.
         """,
-        version: "0.0.1",
+        version: "0.0.2",
         shouldDisplay: true,
         helpNames: [.long, .short]
     )
     
     mutating func run() async throws {
-        //Login process
-        let config = ATProtocolConfiguration(handle: account.handle, appPassword: account.password)
-        let session: UserSession
-        var atProto: ATProtoKit
-        switch try await config.authenticate() {
-        case .success(let result):
-            atProto = ATProtoKit(session: result)
-            session = result
-        case .failure(_):
-            throw(RuntimeError(""))
-        }
+        let (atProto, session) = try await restoreLogin()
         //Get account list
         let users: Array<ActorProfileView>
         if text.isEmpty {
@@ -57,16 +46,38 @@ struct Users: AsyncParsableCommand {
             }
         }
         //Display process
-        print(text.isEmpty ? "Suggested Follows" : "Search Results")
-        print("---------------------------------------------------------")
-        for user in users {
-            if let deisplayName = user.displayName {
-                print(deisplayName.isEmpty ? "No display Name" : deisplayName, terminator: "")
-            } else {
-                print("No display Name", terminator: "")
-            }
-            print("[\(user.actorHandle)]")
+        Group {
+            Text(text.isEmpty ? "Suggested Follows" : "Search Results")
+                .forgroundColor(.blue)
+                .bold()
+                .newLine()
+            
+            HDivider(10)
+                .lineStyle(.double_line)
+                .forgroundColor(.eight_bit(244))
+                .newLine()
         }
-        print("---------------------------------------------------------")
+        .render()
+        
+        for user in users {
+            if let deisplayName = user.displayName, !deisplayName.isEmpty {
+                Text(deisplayName)
+                    .render()
+            } else {
+                Text("No display Name")
+                    .render()
+            }
+            
+            Text("[\(user.actorHandle)]")
+                .forgroundColor(.eight_bit(244))
+                .newLine()
+                .render()
+        }
+        
+        HDivider(10)
+            .lineStyle(.double_line)
+            .forgroundColor(.eight_bit(244))
+            .newLine()
+            .render()
     }
 }

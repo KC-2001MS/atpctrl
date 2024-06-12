@@ -8,31 +8,22 @@
 
 import ArgumentParser
 import ATProtoKit
+import SwiftLI
 
 struct Feeds: AsyncParsableCommand {
-    @OptionGroup var account: Account
-    
     static var configuration = CommandConfiguration(
         commandName: "feeds",
         abstract: "View a list of social networking feeds",
         discussion: """
         Returns a list of recommended feeds for the logged-in account.
         """,
-        version: "0.0.1",
+        version: "0.0.2",
         shouldDisplay: true,
         helpNames: [.long, .short]
     )
     
     mutating func run() async throws {
-        //Login process
-        let config = ATProtocolConfiguration(handle: account.handle, appPassword: account.password)
-        var atProto: ATProtoKit
-        switch try await config.authenticate() {
-        case .success(let result):
-            atProto = ATProtoKit(session: result)
-        case .failure(let failure):
-            throw(RuntimeError("\(failure)"))
-        }
+        let (atProto, _) = try await restoreLogin()
         //Get a list of suggested feeds
         let result  = try await atProto.getSuggestedFeeds()
         let suggestions: Array<FeedGeneratorView>
@@ -42,12 +33,37 @@ struct Feeds: AsyncParsableCommand {
         case .failure(let failure):
             throw(RuntimeError("\(failure)"))
         }
-        //Display process
-        print("Discover New Feeds")
-        print("---------------------------------------------------------")
-        for suggestion in suggestions {
-            print(suggestion.displayName.isEmpty ? "No display Name" : suggestion.displayName)
+        //Display process-------------------------------------------------------")
+        Group {
+            Text("Discover New Feeds")
+                .forgroundColor(.blue)
+                .bold()
+                .newLine()
+            
+            HDivider(10)
+                .lineStyle(.double_line)
+                .forgroundColor(.eight_bit(244))
+                .newLine()
         }
-        print("---------------------------------------------------------")
+        .render()
+        
+        for suggestion in suggestions {
+                Text(suggestion.displayName.isEmpty ? "No display Name" : suggestion.displayName)
+                    .newLine()
+                    .render()
+                
+            if let displayName = suggestion.creator.displayName {
+                Text("Created by \(displayName)")
+                    .forgroundColor(.eight_bit(244))
+                    .newLine()
+                    .render()
+            }
+        }
+        
+        HDivider(10)
+            .lineStyle(.double_line)
+            .forgroundColor(.eight_bit(244))
+            .newLine()
+            .render()
     }
 }
