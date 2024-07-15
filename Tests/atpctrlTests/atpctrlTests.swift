@@ -69,7 +69,7 @@ struct LoginCommandTest {
     struct Executable {
         @Test("Can login information be saved?")
         func saveLoginDataWorks() throws {
-            var account =  AccountData(domain: "test", handle: "test", password: "test")
+            let account =  AccountData(domain: "test", handle: "test", password: "test")
             
             try #require(try? FileHelper.saveLoginData(account))
         }
@@ -79,7 +79,7 @@ struct LoginCommandTest {
     struct NormalBehavior {
         @Test("Is the saved value equal to the loaded value?")
         func consistentSaveAndLoad() throws {
-            var account = AccountData(domain: "test", handle: "test", password: "test")
+            let account = AccountData(domain: "test", handle: "test", password: "test")
             
             try? FileHelper.saveLoginData(account)
             

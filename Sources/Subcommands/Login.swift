@@ -27,15 +27,15 @@ struct Login: AsyncParsableCommand {
     
     mutating func run() async throws {
         let config = ATProtocolConfiguration(handle: account.handle, appPassword: account.password)
-        switch try await config.authenticate() {
-        case .success(_):
+        do {
+            _ = try await config.authenticate()
             Text("Successfully logged in.")
                 .forgroundColor(.green)
                 .italic()
                 .newLine()
                 .render()
-        case .failure(let failure):
-            throw(RuntimeError("\(failure)"))
+        } catch {
+            throw(RuntimeError("\(error)"))
         }
         
         let accountData = AccountData(domain: account.domain, handle: account.handle, password: account.password)

@@ -27,13 +27,7 @@ struct BlockedAccounts: AsyncParsableCommand {
         //Get a list of blocked accounts
         //FIXME: It seems to be a bug in the ATProtoKit framework. It could be fixed with an update.
         let result  = try await atProto.getListBlocks()
-        let users: Array<ActorProfileView>
-        switch result {
-        case .success(let success):
-            users = success.blocks
-        case .failure(let failure):
-            throw(RuntimeError("\(failure)"))
-        }
+        let users = result.blocks
         //Display process
         Group {
             Text("Blocked Accounts")
@@ -45,28 +39,24 @@ struct BlockedAccounts: AsyncParsableCommand {
                 .lineStyle(.double_line)
                 .forgroundColor(.eight_bit(244))
                 .newLine()
-        }
-        .render()
-        
-        for user in users {
-            if let deisplayName = user.displayName, !deisplayName.isEmpty {
-                Text(deisplayName)
-                    .render()
-            } else {
-                Text("No display Name")
-                    .render()
+            
+            for user in users {
+                if let deisplayName = user.displayName, !deisplayName.isEmpty {
+                    Text(deisplayName)
+                } else {
+                    Text("No display Name")
+                }
+                
+                Text("[\(user.actorHandle)]")
+                    .forgroundColor(.eight_bit(244))
+                    .newLine()
             }
             
-            Text("[\(user.actorHandle)]")
+            HDivider(10)
+                .lineStyle(.double_line)
                 .forgroundColor(.eight_bit(244))
                 .newLine()
-                .render()
         }
-        
-        HDivider(10)
-            .lineStyle(.double_line)
-            .forgroundColor(.eight_bit(244))
-            .newLine()
-            .render()
+        .render()
     }
 }

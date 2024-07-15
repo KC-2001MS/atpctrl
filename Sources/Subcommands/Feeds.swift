@@ -26,13 +26,7 @@ struct Feeds: AsyncParsableCommand {
         let (atProto, _) = try await restoreLogin()
         //Get a list of suggested feeds
         let result  = try await atProto.getSuggestedFeeds()
-        let suggestions: Array<FeedGeneratorView>
-        switch result {
-        case .success(let success):
-            suggestions = success.feeds
-        case .failure(let failure):
-            throw(RuntimeError("\(failure)"))
-        }
+        let suggestions = result.feeds
         //Display process-------------------------------------------------------")
         Group {
             Text("Discover New Feeds")
@@ -44,26 +38,24 @@ struct Feeds: AsyncParsableCommand {
                 .lineStyle(.double_line)
                 .forgroundColor(.eight_bit(244))
                 .newLine()
+            
+            
+            for suggestion in suggestions {
+                    Text(suggestion.displayName.isEmpty ? "No display Name" : suggestion.displayName)
+                        .newLine()
+                    
+                if let displayName = suggestion.creator.displayName {
+                    Text("Created by \(displayName)")
+                        .forgroundColor(.eight_bit(244))
+                        .newLine()
+                }
+            }
+            
+            HDivider(10)
+                .lineStyle(.double_line)
+                .forgroundColor(.eight_bit(244))
+                .newLine()
         }
         .render()
-        
-        for suggestion in suggestions {
-                Text(suggestion.displayName.isEmpty ? "No display Name" : suggestion.displayName)
-                    .newLine()
-                    .render()
-                
-            if let displayName = suggestion.creator.displayName {
-                Text("Created by \(displayName)")
-                    .forgroundColor(.eight_bit(244))
-                    .newLine()
-                    .render()
-            }
-        }
-        
-        HDivider(10)
-            .lineStyle(.double_line)
-            .forgroundColor(.eight_bit(244))
-            .newLine()
-            .render()
     }
 }

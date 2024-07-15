@@ -26,13 +26,7 @@ struct MutesAccounts: AsyncParsableCommand {
         let (atProto, _) = try await restoreLogin()
         //Get a list of mutes accounts
         let result  = try await atProto.getMutes()
-        let users: Array<ActorProfileView>
-        switch result {
-        case .success(let success):
-            users = success.mutes
-        case .failure(let failure):
-            throw(RuntimeError("\(failure)"))
-        }
+        let users = result.mutes
         //Display process
         Group {
             Text("Mutes Accounts")
@@ -44,28 +38,24 @@ struct MutesAccounts: AsyncParsableCommand {
                 .lineStyle(.double_line)
                 .forgroundColor(.eight_bit(244))
                 .newLine()
-        }
-        .render()
- 
-        for user in users {
-            if let deisplayName = user.displayName, !deisplayName.isEmpty {
-                Text(deisplayName)
-                    .render()
-            } else {
-                Text("No display Name")
-                    .render()
+            
+            for user in users {
+                if let deisplayName = user.displayName, !deisplayName.isEmpty {
+                    Text(deisplayName)
+                } else {
+                    Text("No display Name")
+                }
+                
+                Text("[\(user.actorHandle)]")
+                    .forgroundColor(.eight_bit(244))
+                    .newLine()
             }
             
-            Text("[\(user.actorHandle)]")
+            HDivider(10)
+                .lineStyle(.double_line)
                 .forgroundColor(.eight_bit(244))
                 .newLine()
-                .render()
         }
-        
-        HDivider(10)
-            .lineStyle(.double_line)
-            .forgroundColor(.eight_bit(244))
-            .newLine()
-            .render()
+        .render()
     }
 }

@@ -10,17 +10,20 @@
 import ATProtoKit
 
 func restoreLogin() async throws -> (ATProtoKit, UserSession) {
+    let atProto: ATProtoKit
+    let session: UserSession
     if let account = try? FileHelper.loadLoginData() {
         let config = ATProtocolConfiguration(handle: account.handle, appPassword: account.password)
-        switch try await config.authenticate() {
-        case .success(let result):
-            let atProto = ATProtoKit(session: result)
-            return (atProto, result)
-        case .failure(let failure):
-            throw(RuntimeError("\(failure)"))
+        do {
+            let result = try await config.authenticate()
+            session = result
+            atProto = ATProtoKit(session: result)
+        } catch {
+            throw(RuntimeError("\(error)"))
         }
     } else {
         print("There is no login record. Please login with the login command.")
         throw(RuntimeError("There is no login record. Please login with the login command."))
     }
+    return (atProto, session)
 }

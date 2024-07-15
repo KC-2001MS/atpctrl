@@ -3,7 +3,7 @@
 Command line tool that allows manipulation of SNS accounts compliant with AT protocol
 
  <p align="center">
-<img src="https://img.shields.io/badge/macOS-12.0+-red.svg" />
+<img src="https://img.shields.io/badge/macOS-13.0+-red.svg" />
 <img src="https://img.shields.io/badge/Swift-5.10-DE5D43.svg" />
     <a href="https://bsky.app/profile/iroiro-work.bsky.social">
         <img src="https://img.shields.io/badge/Contact-@IroIro1234work-lightgrey.svg?style=flat" alt="Bluesky: 

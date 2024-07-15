@@ -27,23 +27,13 @@ struct Users: AsyncParsableCommand {
     mutating func run() async throws {
         let (atProto, session) = try await restoreLogin()
         //Get account list
-        let users: Array<ActorProfileView>
+        let users: Array<AppBskyLexicon.Actor.ProfileViewDefinition>
         if text.isEmpty {
             let result  = try await atProto.getSuggestedFollowsByActor(session.sessionDID)
-            switch result {
-            case .success(let success):
-                users = success.suggestions
-            case .failure(let failure):
-                throw(RuntimeError("\(failure)"))
-            }
+            users = result.suggestions
         } else {
             let result  = try await atProto.searchUsers(by: text)
-            switch result {
-            case .success(let success):
-                users = success.actors
-            case .failure(let failure):
-                throw(RuntimeError("\(failure)"))
-            }
+            users = result.actors
         }
         //Display process
         Group {
@@ -56,28 +46,24 @@ struct Users: AsyncParsableCommand {
                 .lineStyle(.double_line)
                 .forgroundColor(.eight_bit(244))
                 .newLine()
-        }
-        .render()
-        
-        for user in users {
-            if let deisplayName = user.displayName, !deisplayName.isEmpty {
-                Text(deisplayName)
-                    .render()
-            } else {
-                Text("No display Name")
-                    .render()
+            
+            for user in users {
+                if let deisplayName = user.displayName, !deisplayName.isEmpty {
+                    Text(deisplayName)
+                } else {
+                    Text("No display Name")
+                }
+                
+                Text("[\(user.actorHandle)]")
+                    .forgroundColor(.eight_bit(244))
+                    .newLine()
             }
             
-            Text("[\(user.actorHandle)]")
+            HDivider(10)
+                .lineStyle(.double_line)
                 .forgroundColor(.eight_bit(244))
                 .newLine()
-                .render()
         }
-        
-        HDivider(10)
-            .lineStyle(.double_line)
-            .forgroundColor(.eight_bit(244))
-            .newLine()
-            .render()
+        .render()
     }
 }

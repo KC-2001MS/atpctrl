@@ -40,20 +40,19 @@ struct Post: AsyncParsableCommand {
         .render()
         
         if let text = readLine() {
-            let post = await atProto.createPostRecord(text: text)
-            switch post {
-            case .success(_):
+            do {
+                let post = try await atProto.createPostRecord(text: text)
                 Text("Posted.")
                     .forgroundColor(.blue)
                     .newLine()
                     .render()
-            case .failure(let failure):
+            } catch {
                 Group {
                     Text("Submission failed.")
                         .forgroundColor(.red)
                         .newLine()
                     
-                    Text("Error : \(failure)")
+                    Text("Error : \(error)")
                         .newLine()
                 }
                 .render()

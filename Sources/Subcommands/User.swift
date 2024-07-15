@@ -28,46 +28,34 @@ struct User: AsyncParsableCommand {
         let (atProto, session) = try await restoreLogin()
         //Retrieve user profiles
         let result  = try await atProto.getProfile(text.isEmpty ? session.handle : text)
-        let myAccount: ActorProfileViewDetailed
-        switch result {
-        case .success(let success):
-            myAccount = success.actorProfileView
-        case .failure(let failure):
-            throw(RuntimeError("\(failure)"))
-        }
         
-        ProfileView(account: myAccount).render()
+        Group{
+            Text("Profile")
+                .forgroundColor(.blue)
+                .bold()
+                .newLine()
+            
+            HDivider(10)
+                .lineStyle(.double_line)
+                .forgroundColor(.eight_bit(244))
+                .newLine()
+            
+            Group {
+                Text(result.displayName ?? "No Display Name")
+                
+                Text("[\(result.actorHandle)]")
+                    .forgroundColor(.eight_bit(244))
+            }
+            .newLine()
+            
+            Text(result.description ?? "")
+                .newLine(result.description != nil)
+            
+            HDivider(10)
+                .lineStyle(.double_line)
+                .forgroundColor(.eight_bit(244))
+                .newLine()
+        }.render()
     }
 }
 
-struct ProfileView: View {
-    let account: ActorProfileViewDetailed
-    
-    var body: [View] {
-        Text("Profile")
-            .forgroundColor(.blue)
-            .bold()
-            .newLine()
-        
-        HDivider(10)
-            .lineStyle(.double_line)
-            .forgroundColor(.eight_bit(244))
-            .newLine()
-        
-        Group {
-            Text(account.displayName ?? "No Display Name")
-            
-            Text("[\(account.actorHandle)]")
-                .forgroundColor(.eight_bit(244))
-        }
-        .newLine()
-        
-        Text(account.description ?? "")
-            .newLine(account.description != nil)
-        
-        HDivider(10)
-            .lineStyle(.double_line)
-            .forgroundColor(.eight_bit(244))
-            .newLine()
-    }
-}

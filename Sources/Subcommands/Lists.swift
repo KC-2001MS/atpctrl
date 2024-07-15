@@ -25,13 +25,7 @@ struct Lists: AsyncParsableCommand {
     mutating func run() async throws {
         let (atProto, session) = try await restoreLogin()
         let result  = try await atProto.getLists(from: session.sessionDID)
-        let lists: Array<GraphListView>
-        switch result {
-        case .success(let success):
-            lists = success.lists
-        case .failure(let failure):
-            throw(RuntimeError("\(failure)"))
-        }
+        let lists = result.lists
         //Display process
         Group {
             Text("User Lists")
@@ -43,17 +37,16 @@ struct Lists: AsyncParsableCommand {
                 .lineStyle(.double_line)
                 .forgroundColor(.eight_bit(244))
                 .newLine()
+            
+            for list in lists {
+                Text(list.name)
+            }
+            
+            HDivider(10)
+                .lineStyle(.double_line)
+                .forgroundColor(.eight_bit(244))
+                .newLine()
         }
         .render()
-        
-        for list in lists {
-            print(list.name)
-        }
-        
-        HDivider(10)
-            .lineStyle(.double_line)
-            .forgroundColor(.eight_bit(244))
-            .newLine()
-            .render()
     }
 }
