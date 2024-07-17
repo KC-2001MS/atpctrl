@@ -13,27 +13,55 @@ struct FileHelper {
     
     static let fileURL = fileManager.temporaryDirectory.appendingPathComponent("login_data.json")
 
-    static func saveLoginData(_ loginData: AccountData) throws {
+    static func saveLoginData(_ loginData: AccountData) throws(FileError) {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
-        let jsonData = try encoder.encode(loginData)
+        let jsonData: Data
+        
+        do {
+            jsonData = try encoder.encode(loginData)
+        } catch {
+            throw FileError.encodeFailed
+        }
         
         do {
             try jsonData.write(to: fileURL, options: .atomic)
         } catch {
-            throw(RuntimeError("\(error)"))
+            throw FileError.unableToWriteFile
         }
     }
 
-    static func loadLoginData() throws -> AccountData? {
+    static func loadLoginData() throws(FileError) -> AccountData? {
         guard let jsonData = try? Data(contentsOf: fileURL) else {
-            return nil
+            throw FileError.fileNotFound
         }
+        
         let decoder = JSONDecoder()
-        return try decoder.decode(AccountData.self, from: jsonData)
+        
+        let data: AccountData
+        do {
+            data = try decoder.decode(AccountData.self, from: jsonData)
+        } catch {
+            throw FileError.decodeFailed
+        }
+        
+        return data
     }
 
-    static func deleteLoginData() throws {
-        try FileManager.default.removeItem(at: fileURL)
+    static func deleteLoginData() throws(FileError) {
+        do {
+            try FileManager.default.removeItem(at: fileURL)
+        } catch {
+            throw FileError.deleteFailed
+        }
     }
+}
+
+enum FileError: Error {
+    case fileNotFound
+    case unableToReadFile
+    case unableToWriteFile
+    case encodeFailed
+    case decodeFailed
+    case deleteFailed
 }

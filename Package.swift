@@ -30,7 +30,8 @@ let package = Package(
             dependencies: [
                 .product(name: "Testing", package: "swift-testing"),
                 "atpctrl"
-            ]
+            ],
+            resources: [.process("account.json")]
         )
     ]
 )
