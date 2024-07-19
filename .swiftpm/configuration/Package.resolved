@@ -1,13 +1,13 @@
 {
-  "originHash" : "2b34f0986a54a8cbf79c72ef7a1d0e85770314839b3089ae14d9b7bc88a6d646",
+  "originHash" : "c8c952d6644b92d3f8d92a52926d9261850b8bc635fea992474c6b258d442e26",
   "pins" : [
     {
       "identity" : "atprotokit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MasterJ93/ATProtoKit.git",
       "state" : {
-        "revision" : "6181bb79fdaa83371059252a91009b89aee603f4",
-        "version" : "0.16.1"
+        "revision" : "d60fea7e14f268cb4f5a314ad680979306118cfd",
+        "version" : "0.16.2"
       }
     },
     {
@@ -52,7 +52,7 @@
       "location" : "https://github.com/apple/swift-testing.git",
       "state" : {
         "branch" : "main",
-        "revision" : "ffa4d0ff65d1e0fa1b56251f46bce07c51e1299e"
+        "revision" : "2b1d6264a6e4a864421b6c44ff23b9878afa23a5"
       }
     },
     {

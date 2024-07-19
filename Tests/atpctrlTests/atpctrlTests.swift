@@ -80,105 +80,115 @@ struct FeedsCommandTest {
     }
 }
 
-//@Suite("Lists Command Testing",.tags(.lists))
-//struct ListsCommandTest {
-//    @Suite(.tags(.executable))
-//    struct Executable {
-//        @Test("Does the Lists command work?")
-//        func ListsWorks() async throws {
-//            try FileHelper.saveLoginData(account)
-//            
-//            var lists = Lists()
-//            
-//            await #expect(throws: Never.self) {
-//                try await lists.run()
-//            }
-//        }
-//    }
-//}
+@Suite("Lists Command Testing",.tags(.lists))
+struct ListsCommandTest {
+    @Suite(.tags(.executable))
+    struct Executable {
+        @Test("Does the Lists command work?")
+        func ListsWorks() async throws {
+            try FileHelper.saveLoginData(account)
+            
+            var lists = Lists()
+            
+            await #expect(throws: Never.self) {
+                try await lists.run()
+            }
+        }
+    }
+}
 
-//@Suite("Login Command Testing",.tags(.login))
-//struct LoginCommandTest {
-//    @Suite(.tags(.executable))
-//    struct Executable {
-//        @Test("Can login information be saved?")
-//        func saveLoginDataWorks() throws {
-//            let account =  AccountData(domain: "test", handle: "test", password: "test")
-//            
-//            try #require(FileHelper.saveLoginData(account))
-//        }
-//    }
-//    
-//    @Suite(.tags(.normalBehavior))
-//    struct NormalBehavior {
-//        @Test("Is the saved value equal to the loaded value?")
-//        func consistentSaveAndLoad() throws {
-//            let account = AccountData(domain: "test", handle: "test", password: "test")
-//            
-//            try? FileHelper.saveLoginData(account)
-//            
-//            let loadedAccount = try? FileHelper.loadLoginData()
-//            
-//            #expect(account == loadedAccount)
-//        }
-//        
-//        @Test("Is the file deleted successfully?")
-//        func deleteLoginInformation() throws {
-//            try? FileHelper.deleteLoginData()
-//            
-//            #expect(!FileHelper.fileManager.fileExists(atPath: FileHelper.fileURL.path))
-//        }
-//    }
-//}
-//
-//@Suite("MutesAccounts Command Testing",.tags(.mutesAccounts))
-//struct MutesAccountsCommandTest {
-//    @Suite(.tags(.executable))
-//    struct Executable {
-//        @Test("Does the MutesAccounts command work?")
-//        func MutesAccountsWorks() throws {
-//            var feeds = MutesAccounts()
-//            
-//            try #require(feeds.run())
-//        }
-//    }
-//}
-//
-//@Suite("Post Command Testing",.tags(.post))
-//struct PostAccountsCommandTest {
-//    @Suite(.tags(.executable))
-//    struct Executable {
-//        @Test("Does the Post command work?")
-//        func PostWorks() throws {
-//            var feeds = Post()
-//            
-//            try #require(feeds.run())
-//        }
-//    }
-//}
-//
-//@Suite("User Command Testing",.tags(.user))
-//struct UserAccountsCommandTest {
-//    @Suite(.tags(.executable))
-//    struct Executable {
-//        @Test("Does the User command work?")
-//        func UserWorks() throws {
-//            var feeds = User()
-//            
-//            try #require(feeds.run())
-//        }
-//    }
-//}
-//
-//@Suite("Users Command Testing",.tags(.users))
-//struct UsersAccountsCommandTest {
-//    @Suite(.tags(.executable))
-//    struct Executable {
-//        @Test("Does the Users command work?")
-//        func UsersWorks() throws {
-//            var feeds = Users()
-//            
-//            try #require(feeds.run())
-//        }
-//    }
-//}
+@Suite("Login Command Testing",.tags(.login))
+struct LoginCommandTest {
+    @Suite(.tags(.executable))
+    struct Executable {
+        @Test("Can login information be saved?")
+        func saveLoginDataWorks() throws {
+            let account =  AccountData(domain: "test", handle: "test", password: "test")
+            
+            #expect(throws: Never.self) {
+                try FileHelper.saveLoginData(account)
+            }
+        }
+    }
+    
+    @Suite(.tags(.normalBehavior))
+    struct NormalBehavior {
+        @Test("Is the saved value equal to the loaded value?")
+        func consistentSaveAndLoad() throws {
+            let account = AccountData(domain: "test", handle: "test", password: "test")
+            
+            try? FileHelper.saveLoginData(account)
+            
+            let loadedAccount = try? FileHelper.loadLoginData()
+            
+            #expect(account == loadedAccount)
+        }
+        
+        @Test("Is the file deleted successfully?")
+        func deleteLoginInformation() throws {
+            try? FileHelper.deleteLoginData()
+            
+            #expect(!FileHelper.fileManager.fileExists(atPath: FileHelper.fileURL.path))
+        }
+    }
+}
+
+@Suite("MutesAccounts Command Testing",.tags(.mutesAccounts))
+struct MutesAccountsCommandTest {
+    @Suite(.tags(.executable))
+    struct Executable {
+        @Test("Does the MutesAccounts command work?")
+        func MutesAccountsWorks() async throws {
+            var mutes = MutesAccounts()
+            
+            await #expect(throws: Never.self) {
+                try await mutes.run()
+            }
+        }
+    }
+}
+
+@Suite("Post Command Testing",.tags(.post))
+struct PostAccountsCommandTest {
+    @Suite(.tags(.executable))
+    struct Executable {
+        @Test("Does the Post command work?")
+        func PostWorks() async throws {
+            var post = Post()
+            
+            await #expect(throws: Never.self) {
+                try await post.run()
+            }
+        }
+    }
+}
+
+@Suite("User Command Testing",.tags(.user))
+struct UserAccountsCommandTest {
+    @Suite(.tags(.executable))
+    struct Executable {
+        @Test("Does the User command work?")
+        func UserWorks() async throws {
+            var user = User()
+            
+            await #expect(throws: Never.self) {
+                try await user.run()
+            }
+        }
+    }
+}
+
+@Suite("Users Command Testing",.tags(.users))
+struct UsersAccountsCommandTest {
+    @Suite(.tags(.executable))
+    struct Executable {
+        @Test("Does the Users command work?")
+        func UsersWorks() async throws {
+            var users = Users()
+            
+            await #expect(throws: Never.self) {
+                try await users.run()
+            }
+        }
+    }
+}
