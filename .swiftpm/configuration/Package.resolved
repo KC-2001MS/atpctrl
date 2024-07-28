@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MasterJ93/ATProtoKit.git",
       "state" : {
-        "revision" : "d60fea7e14f268cb4f5a314ad680979306118cfd",
-        "version" : "0.16.2"
+        "revision" : "edc9de8bf78b242c7ab7f39035dbc45ab721a390",
+        "version" : "0.16.3"
       }
     },
     {
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser.git",
       "state" : {
-        "revision" : "0fbc8848e389af3bb55c182bc19ca9d5dc2f255b",
-        "version" : "1.4.0"
+        "revision" : "41982a3656a71c768319979febd796c6fd111d5c",
+        "version" : "1.5.0"
       }
     },
     {
@@ -52,7 +52,7 @@
       "location" : "https://github.com/apple/swift-testing.git",
       "state" : {
         "branch" : "main",
-        "revision" : "2b1d6264a6e4a864421b6c44ff23b9878afa23a5"
+        "revision" : "e3e7e940fff9ce6bc0294b68a8cbbdbcd7033d8d"
       }
     },
     {

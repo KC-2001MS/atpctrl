@@ -9,8 +9,8 @@ let package = Package(
             .macOS(.v13),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0"),
-        .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.10.0"),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.5.0"),
+        .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.16.0"),
         .package(url: "https://github.com/KC-2001MS/SwiftLI.git", branch: "main"),
         .package(url: "https://github.com/apple/swift-testing.git", branch: "main"),
     ],
