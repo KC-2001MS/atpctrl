@@ -41,7 +41,7 @@ struct Post: AsyncParsableCommand {
         
         if let text = readLine() {
             do {
-                let post = try await atProto.createPostRecord(text: text)
+                let post = try await ATProtoBluesky(atProtoKitInstance: atProto).createPostRecord(text: text)
                 Text("Posted.")
                     .forgroundColor(.blue)
                     .newLine()

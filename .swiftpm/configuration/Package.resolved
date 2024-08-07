@@ -1,13 +1,13 @@
 {
-  "originHash" : "c8c952d6644b92d3f8d92a52926d9261850b8bc635fea992474c6b258d442e26",
+  "originHash" : "9394b8d176017596adec334400fa4b84824a1e333cfffb8d00e38bac14c8d9ea",
   "pins" : [
     {
       "identity" : "atprotokit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MasterJ93/ATProtoKit.git",
       "state" : {
-        "revision" : "edc9de8bf78b242c7ab7f39035dbc45ab721a390",
-        "version" : "0.16.3"
+        "revision" : "2655e06b03b5d71c128f9bac0e53b0b2f209214f",
+        "version" : "0.17.1"
       }
     },
     {
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftlang/swift-syntax.git",
       "state" : {
-        "revision" : "4c6cc0a3b9e8f14b3ae2307c5ccae4de6167ac2c",
-        "version" : "600.0.0-prerelease-2024-06-12"
+        "revision" : "06b5cdc432e93b60e3bdf53aff2857c6b312991a",
+        "version" : "600.0.0-prerelease-2024-07-30"
       }
     },
     {
@@ -52,7 +52,7 @@
       "location" : "https://github.com/apple/swift-testing.git",
       "state" : {
         "branch" : "main",
-        "revision" : "e3e7e940fff9ce6bc0294b68a8cbbdbcd7033d8d"
+        "revision" : "1d2e39c34a8036fa379382d54c3a941e132fc605"
       }
     },
     {
@@ -69,8 +69,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/KC-2001MS/SwiftLI.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "68d6ba4d95c13e1c7b9511521f7e756edd37ef39"
+        "revision" : "23e7cc06af7e5d684943a3d7ca45b941989426ed",
+        "version" : "0.3.1"
       }
     },
     {
@@ -78,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/scinfu/SwiftSoup.git",
       "state" : {
-        "revision" : "028487d4a8a291b2fe1b4392b5425b6172056148",
-        "version" : "2.7.2"
+        "revision" : "e2d11208519549c2e5798d70190472045633f22f",
+        "version" : "2.7.3"
       }
     }
   ],
