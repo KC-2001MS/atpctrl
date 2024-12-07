@@ -25,7 +25,10 @@ struct ATProtocolContorol: AsyncParsableCommand {
             Feeds.self,
             Lists.self,
             MutesAccounts.self,
-            BlockedAccounts.self
+            BlockedAccounts.self,
+            Followers.self,
+            Following.self,
+            Notifications.self
         ],
         defaultSubcommand: Login.self,
         helpNames: [.long, .short]

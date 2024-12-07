@@ -10,6 +10,7 @@ import ArgumentParser
 import ATProtoKit
 import SwiftLI
 
+// OK
 struct BlockedAccounts: AsyncParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "blocked-users",
@@ -23,7 +24,7 @@ struct BlockedAccounts: AsyncParsableCommand {
     )
     
     mutating func run() async throws {
-        let (atProto, _) = try await restoreLogin()
+        let atProto = try await restoreLogin()
         //Get a list of blocked accounts
         //FIXME: It seems to be a bug in the ATProtoKit framework. It could be fixed with an update.
         let result  = try await atProto.getListBlocks()
@@ -39,17 +40,22 @@ struct BlockedAccounts: AsyncParsableCommand {
                 .lineStyle(.double_line)
                 .forgroundColor(.eight_bit(244))
                 .newLine()
-            
-            for user in users {
-                if let deisplayName = user.displayName, !deisplayName.isEmpty {
-                    Text(deisplayName)
-                } else {
-                    Text("No display Name")
-                }
-                
-                Text("[\(user.actorHandle)]")
-                    .forgroundColor(.eight_bit(244))
+            if users.isEmpty {
+                Text("No Blocked Accounts")
+                    .forgroundColor(.red)
                     .newLine()
+            } else {
+                for user in users {
+                    if let deisplayName = user.displayName, !deisplayName.isEmpty {
+                        Text(deisplayName)
+                    } else {
+                        Text("No display Name")
+                    }
+                    
+                    Text("[\(user.actorHandle)]")
+                        .forgroundColor(.eight_bit(244))
+                        .newLine()
+                }
             }
             
             HDivider(10)

@@ -1,23 +1,23 @@
 //
-//  Users.swift
+//  Followers.swift
+//  atpctrl
 //
+//  Created by 茅根啓介 on 2024/12/07.
 //
-//  Created by Keisuke Chinone on 2024/04/03.
-//
-
 
 import ArgumentParser
 import ATProtoKit
 import SwiftLI
 
-struct Users: AsyncParsableCommand {
-    @Argument(help: "String to be searched") var text: String = ""
+// OK
+struct Followers: AsyncParsableCommand {
+    @Argument(help: "The user's handle you want to display") var text: String = ""
     
     static var configuration = CommandConfiguration(
-        commandName: "users",
-        abstract: "View a list of logged-in SNS users",
+        commandName: "followers",
+        abstract: "View the list of blocked accounts",
         discussion: """
-        Displays a list of users who fit the criteria. If blank, a list of recommended users is displayed.
+        Displays a list of blocked accounts.
         """,
         version: "0.0.2",
         shouldDisplay: true,
@@ -26,18 +26,13 @@ struct Users: AsyncParsableCommand {
     
     mutating func run() async throws {
         let atProto = try await restoreLogin()
-        //Get account list
-        let users: Array<AppBskyLexicon.Actor.ProfileViewDefinition>
-        if text.isEmpty {
-            let result  = try await atProto.getSuggestedFollowsByActor(atProto.session?.sessionDID ?? "")
-            users = result.suggestions
-        } else {
-            let result  = try await atProto.searchUsers(matching: text)
-            users = result.actors
-        }
+        //Get a list of blocked accounts
+        //FIXME: It seems to be a bug in the ATProtoKit framework. It could be fixed with an update.
+        let result = try await atProto.getFollowers(by: text.isEmpty ? atProto.session?.handle ?? text : text)
+        let accounts = result.followers
         //Display process
         Group {
-            Text(text.isEmpty ? "Suggested Follows" : "Search Results")
+            Text("Followers")
                 .forgroundColor(.blue)
                 .bold()
                 .newLine()
@@ -47,19 +42,19 @@ struct Users: AsyncParsableCommand {
                 .forgroundColor(.eight_bit(244))
                 .newLine()
             
-            if users.isEmpty {
-                Text("No Search Results")
+            if accounts.isEmpty {
+                Text("No Followers")
                     .forgroundColor(.red)
                     .newLine()
             } else {
-                for user in users {
-                    if let deisplayName = user.displayName, !deisplayName.isEmpty {
+                for account in accounts {
+                    if let deisplayName = account.displayName, !deisplayName.isEmpty {
                         Text(deisplayName)
                     } else {
                         Text("No display Name")
                     }
                     
-                    Text("[\(user.actorHandle)]")
+                    Text("[\(account.actorHandle)]")
                         .forgroundColor(.eight_bit(244))
                         .newLine()
                 }

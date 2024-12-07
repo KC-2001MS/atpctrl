@@ -1,13 +1,13 @@
 {
-  "originHash" : "9394b8d176017596adec334400fa4b84824a1e333cfffb8d00e38bac14c8d9ea",
+  "originHash" : "188911f1e7aee1e3ed540394a47335bbe507ad32c013f5f4002fd5580a179626",
   "pins" : [
     {
       "identity" : "atprotokit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MasterJ93/ATProtoKit.git",
       "state" : {
-        "revision" : "a8473305d057ed5196a7cfe716120918157862aa",
-        "version" : "0.17.2"
+        "revision" : "c0622712ade49a04b24d2384083b3d99444b540b",
+        "version" : "0.20.3"
       }
     },
     {
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections.git",
       "state" : {
-        "revision" : "3d2dc41a01f9e49d84f0a3925fb858bed64f702d",
-        "version" : "1.1.2"
+        "revision" : "671108c96644956dddcd89dd59c203dcdb36cec7",
+        "version" : "1.1.4"
       }
     },
     {
@@ -33,17 +33,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log.git",
       "state" : {
-        "revision" : "e97a6fcb1ab07462881ac165fdbb37f067e205d5",
-        "version" : "1.5.4"
+        "revision" : "96a2f8a0fa41e9e09af4585e2724c4e825410b91",
+        "version" : "1.6.2"
       }
     },
     {
       "identity" : "swift-syntax",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-syntax.git",
+      "location" : "https://github.com/swiftlang/swift-syntax.git",
       "state" : {
-        "revision" : "74c759fe021b87849501af3808ef24fcba8dfff3",
-        "version" : "600.0.0-prerelease-2024-06-04"
+        "revision" : "0687f71944021d616d34d922343dcef086855920",
+        "version" : "600.0.1"
       }
     },
     {
@@ -52,7 +52,7 @@
       "location" : "https://github.com/apple/swift-testing.git",
       "state" : {
         "branch" : "main",
-        "revision" : "37efc631165e62a930396a9b1d1cd38ae6476584"
+        "revision" : "a4ed760ce69261101fefffd1abf78ea663a4a44c"
       }
     },
     {
@@ -69,17 +69,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/KC-2001MS/SwiftLI.git",
       "state" : {
-        "revision" : "23e7cc06af7e5d684943a3d7ca45b941989426ed",
-        "version" : "0.3.1"
-      }
-    },
-    {
-      "identity" : "swiftsoup",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/scinfu/SwiftSoup.git",
-      "state" : {
-        "revision" : "028487d4a8a291b2fe1b4392b5425b6172056148",
-        "version" : "2.7.2"
+        "revision" : "46e7b10aab0bcafd61de197142c4c6a39bc026da",
+        "version" : "0.4.1"
       }
     }
   ],

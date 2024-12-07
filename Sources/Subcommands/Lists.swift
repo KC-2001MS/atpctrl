@@ -11,6 +11,8 @@ import ATProtoKit
 import SwiftLI
 
 struct Lists: AsyncParsableCommand {
+    @Argument(help: "The user's handle you want to display") var text: String = ""
+    
     static var configuration = CommandConfiguration(
         commandName: "lists",
         abstract: "View a list of SNS user lists.",
@@ -23,8 +25,10 @@ struct Lists: AsyncParsableCommand {
     )
     
     mutating func run() async throws {
-        let (atProto, session) = try await restoreLogin()
-        let result  = try await atProto.getLists(from: session.sessionDID)
+        let atProto = try await restoreLogin()
+        let profile  = try await atProto.getProfile(text.isEmpty ? atProto.session?.handle ?? text : text)
+        //FIXME: I do not know how to specify the DID for the argument of the getLists function. It does not work.
+        let result  = try await atProto.getLists(from: profile.actorDID)
         let lists = result.lists
         //Display process
         Group {

@@ -10,7 +10,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.5.0"),
-        .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.16.0"),
+        .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.20.0"),
         .package(url: "https://github.com/KC-2001MS/SwiftLI.git", from: "0.3.0"),
         .package(url: "https://github.com/apple/swift-testing.git", branch: "main"),
     ],

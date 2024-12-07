@@ -11,6 +11,8 @@ import ATProtoKit
 import SwiftLI
 
 struct Feeds: AsyncParsableCommand {
+    @Argument(help: "Keywords for the feed you want to search") var text: String = ""
+    
     static var configuration = CommandConfiguration(
         commandName: "feeds",
         abstract: "View a list of social networking feeds",
@@ -23,11 +25,12 @@ struct Feeds: AsyncParsableCommand {
     )
     
     mutating func run() async throws {
-        let (atProto, _) = try await restoreLogin()
+        let atProto = try await restoreLogin()
         //Get a list of suggested feeds
-        let result  = try await atProto.getSuggestedFeeds()
-        let suggestions = result.feeds
-        //Display process-------------------------------------------------------")
+        let getSuggestedFeedsItem  = try await atProto.getSuggestedFeeds()
+        let suggestions = getSuggestedFeedsItem.feeds
+        
+        //Display process
         Group {
             Text("Discover New Feeds")
                 .forgroundColor(.blue)
@@ -39,9 +42,8 @@ struct Feeds: AsyncParsableCommand {
                 .forgroundColor(.eight_bit(244))
                 .newLine()
             
-            
             for suggestion in suggestions {
-                    Text(suggestion.displayName.isEmpty ? "No display Name" : suggestion.displayName)
+                Text(suggestion.displayName.isEmpty ? "No display Name" : suggestion.displayName)
                         .newLine()
                     
                 if let displayName = suggestion.creator.displayName {
@@ -50,7 +52,7 @@ struct Feeds: AsyncParsableCommand {
                         .newLine()
                 }
             }
-            
+
             HDivider(10)
                 .lineStyle(.double_line)
                 .forgroundColor(.eight_bit(244))

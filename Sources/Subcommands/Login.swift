@@ -10,6 +10,7 @@ import ArgumentParser
 import ATProtoKit
 import SwiftLI
 
+// OK
 struct Login: AsyncParsableCommand {
     @OptionGroup var account: Account
     //MARK: configuration

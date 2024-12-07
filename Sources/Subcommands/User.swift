@@ -25,9 +25,9 @@ struct User: AsyncParsableCommand {
     )
     
     mutating func run() async throws {
-        let (atProto, session) = try await restoreLogin()
+        let atProto = try await restoreLogin()
         //Retrieve user profiles
-        let result  = try await atProto.getProfile(text.isEmpty ? session.handle : text)
+        let result: AppBskyLexicon.Actor.ProfileViewDetailedDefinition?  = try? await atProto.getProfile(text.isEmpty ? atProto.session?.handle ?? text : text)
         
         Group{
             Text("Profile")
@@ -40,22 +40,29 @@ struct User: AsyncParsableCommand {
                 .forgroundColor(.eight_bit(244))
                 .newLine()
             
-            Group {
-                Text(result.displayName ?? "No Display Name")
+            if let result = result {
+                Group {
+                    Text(result.displayName ?? "No Display Name")
+                    
+                    Text("[\(result.actorHandle)]")
+                        .forgroundColor(.eight_bit(244))
+                }
+                .newLine()
                 
-                Text("[\(result.actorHandle)]")
-                    .forgroundColor(.eight_bit(244))
+                Text(result.description ?? "")
+                    .newLine(result.description != nil)
+            } else {
+                Text("No User")
+                    .forgroundColor(.red)
+                    .newLine()
             }
-            .newLine()
-            
-            Text(result.description ?? "")
-                .newLine(result.description != nil)
             
             HDivider(10)
                 .lineStyle(.double_line)
                 .forgroundColor(.eight_bit(244))
                 .newLine()
-        }.render()
+        }
+        .render()
     }
 }
 

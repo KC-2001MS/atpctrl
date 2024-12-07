@@ -11,8 +11,8 @@ import ATProtoKit
 import SwiftLI
 import Foundation
 
+// OK
 struct Post: AsyncParsableCommand {
-    //MARK: configuration
     static var configuration = CommandConfiguration(
         commandName: "post",
         abstract: "Submit Text",
@@ -26,7 +26,7 @@ struct Post: AsyncParsableCommand {
     )
     
     mutating func run() async throws {
-        let (atProto, _) = try await restoreLogin()
+        let atProto = try await restoreLogin()
         
         Group {
             Text("Please enter the content of your submission.")
@@ -41,7 +41,7 @@ struct Post: AsyncParsableCommand {
         
         if let text = readLine() {
             do {
-                let post = try await ATProtoBluesky(atProtoKitInstance: atProto).createPostRecord(text: text)
+                _ = try await ATProtoBluesky(atProtoKitInstance: atProto).createPostRecord(text: text)
                 Text("Posted.")
                     .forgroundColor(.blue)
                     .newLine()
