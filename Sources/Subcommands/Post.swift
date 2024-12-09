@@ -26,7 +26,14 @@ struct Post: AsyncParsableCommand {
     )
     
     mutating func run() async throws {
-        let atProto = try await restoreLogin()
+        let atProto: ATProtoKit
+        
+        do {
+            atProto = try await restoreLogin()
+        } catch {
+            LoginErrorView().render()
+            return
+        }
         
         Group {
             Text("Please enter the content of your submission.")

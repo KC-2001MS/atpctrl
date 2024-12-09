@@ -25,7 +25,14 @@ struct Following: AsyncParsableCommand {
     )
     
     mutating func run() async throws {
-        let atProto = try await restoreLogin()
+        let atProto: ATProtoKit
+        
+        do {
+            atProto = try await restoreLogin()
+        } catch {
+            LoginErrorView().render()
+            return
+        }
         //Get a list of blocked accounts
         //FIXME: It seems to be a bug in the ATProtoKit framework. It could be fixed with an update.
         let result = try await atProto.getFollows(from: text.isEmpty ? atProto.session?.handle ?? text : text)

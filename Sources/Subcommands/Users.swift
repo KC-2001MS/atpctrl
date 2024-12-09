@@ -25,15 +25,22 @@ struct Users: AsyncParsableCommand {
     )
     
     mutating func run() async throws {
-        let atProto = try await restoreLogin()
+        let atProto: ATProtoKit
+        
+        do {
+            atProto = try await restoreLogin()
+        } catch {
+            LoginErrorView().render()
+            return
+        }
         //Get account list
         let users: Array<AppBskyLexicon.Actor.ProfileViewDefinition>
         if text.isEmpty {
-            let result  = try await atProto.getSuggestedFollowsByActor(atProto.session?.sessionDID ?? "")
-            users = result.suggestions
+            let result  = try? await atProto.getSuggestedFollowsByActor(atProto.session?.sessionDID ?? "")
+            users = result?.suggestions ?? []
         } else {
-            let result  = try await atProto.searchUsers(matching: text)
-            users = result.actors
+            let result  = try? await atProto.searchUsers(matching: text)
+            users = result?.actors ?? []
         }
         //Display process
         Group {

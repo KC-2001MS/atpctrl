@@ -23,10 +23,17 @@ struct Notifications: AsyncParsableCommand {
     )
     
     mutating func run() async throws {
-        let atProto = try await restoreLogin()
+        let atProto: ATProtoKit
+        
+        do {
+            atProto = try await restoreLogin()
+        } catch {
+            LoginErrorView().render()
+            return
+        }
         //Get a list of notifications
-        let result  = try await atProto.listNotifications(priority: nil)
-        let notifications = result.notifications
+        let result  = try? await atProto.listNotifications(priority: nil)
+        let notifications = result?.notifications ?? []
         
         Group {
             Text("Notifications")

@@ -25,10 +25,20 @@ struct Feeds: AsyncParsableCommand {
     )
     
     mutating func run() async throws {
-        let atProto = try await restoreLogin()
+        let atProto: ATProtoKit
+        
+        do {
+            atProto = try await restoreLogin()
+        } catch {
+            LoginErrorView().render()
+            return
+        }
         //Get a list of suggested feeds
-        let getSuggestedFeedsItem  = try await atProto.getSuggestedFeeds()
-        let suggestions = getSuggestedFeedsItem.feeds
+        let feeds: [AppBskyLexicon.Feed.GeneratorViewDefinition]
+
+        let getSuggestedFeedsItem  = try? await atProto.getSuggestedFeeds()
+        feeds = getSuggestedFeedsItem?.feeds ?? []
+
         
         //Display process
         Group {
@@ -42,14 +52,20 @@ struct Feeds: AsyncParsableCommand {
                 .forgroundColor(.eight_bit(244))
                 .newLine()
             
-            for suggestion in suggestions {
-                Text(suggestion.displayName.isEmpty ? "No display Name" : suggestion.displayName)
+            if feeds.isEmpty {
+                Text("No Feeds")
+                    .forgroundColor(.red)
+                    .newLine()
+            } else {
+                for suggestion in feeds {
+                    Text(suggestion.displayName.isEmpty ? "No display Name" : suggestion.displayName)
                         .newLine()
                     
-                if let displayName = suggestion.creator.displayName {
-                    Text("Created by \(displayName)")
-                        .forgroundColor(.eight_bit(244))
-                        .newLine()
+                    if let displayName = suggestion.creator.displayName {
+                        Text("Created by \(displayName)")
+                            .forgroundColor(.eight_bit(244))
+                            .newLine()
+                    }
                 }
             }
 

@@ -25,7 +25,15 @@ struct Lists: AsyncParsableCommand {
     )
     
     mutating func run() async throws {
-        let atProto = try await restoreLogin()
+        let atProto: ATProtoKit
+        
+        do {
+            atProto = try await restoreLogin()
+        } catch {
+            LoginErrorView().render()
+            return
+        }
+        
         let profile  = try await atProto.getProfile(text.isEmpty ? atProto.session?.handle ?? text : text)
         //FIXME: I do not know how to specify the DID for the argument of the getLists function. It does not work.
         let result  = try await atProto.getLists(from: profile.actorDID)

@@ -25,7 +25,14 @@ struct User: AsyncParsableCommand {
     )
     
     mutating func run() async throws {
-        let atProto = try await restoreLogin()
+        let atProto: ATProtoKit
+        
+        do {
+            atProto = try await restoreLogin()
+        } catch {
+            LoginErrorView().render()
+            return
+        }
         //Retrieve user profiles
         let result: AppBskyLexicon.Actor.ProfileViewDetailedDefinition?  = try? await atProto.getProfile(text.isEmpty ? atProto.session?.handle ?? text : text)
         

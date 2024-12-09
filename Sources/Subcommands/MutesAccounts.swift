@@ -24,10 +24,17 @@ struct MutesAccounts: AsyncParsableCommand {
     )
     
     mutating func run() async throws {
-        let atProto = try await restoreLogin()
+        let atProto: ATProtoKit
+        
+        do {
+            atProto = try await restoreLogin()
+        } catch {
+            LoginErrorView().render()
+            return
+        }
         //Get a list of mutes accounts
-        let result  = try await atProto.getMutes()
-        let users = result.mutes
+        let result  = try? await atProto.getMutes()
+        let users = result?.mutes ?? []
         //Display process
         Group {
             Text("Mutes Accounts")
